@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>نوشیدنی‌های قهوه — طراحی شیشه‌ای</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --coffee-900:#3b2a1f;
+      --coffee-800:#4a3426;
+      --coffee-700:#6b4a32;
+      --coffee-600:#8a5a3a;
+      --cream-100:#fffaf2;
+      --cream-200:#f8f1e7;
+      --cream-300:#efe6d9;
+      --white:#ffffff;
+      --glass-bg:rgba(255,255,255,.18);
+      --glass-stroke:rgba(255,255,255,.35);
+      --shadow: 0 10px 30px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.1);
+      --radius-xxl: 22px;
+      --radius-xl: 16px;
+      --radius: 12px;
+      --grad-main: linear-gradient(135deg, #fff7ea 0%, #f2e3cf 40%, #e7d7c2 100%);
+      --grad-coffee: linear-gradient(135deg, #6b4a32, #3b2a1f);
+      --grad-bar: linear-gradient(90deg, #8a5a3a, #6b4a32 50%, #3b2a1f);
+      --bar-bg: rgba(255,255,255,.35);
+      --bar-gloss: linear-gradient(180deg, rgba(255,255,255,.65), rgba(255,255,255,.05));
+      --accent:#b57b52;
+      --success:#3aa76d;
+      --warning:#e7a23b;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Vazirmatn",system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Naskh Arabic",sans-serif;
+      color:var(--coffee-900);
+      background:
+        radial-gradient(1200px 800px at 80% -10%, rgba(163,115,80,.25), transparent 60%),
+        radial-gradient(1000px 700px at 10% 110%, rgba(107,74,50,.20), transparent 60%),
+        var(--grad-main);
+      overflow-x:hidden;
+    }
+
+    /* پس‌زمینه دانه‌های قهوه */
+    .beans{
+      position:fixed; inset:0; pointer-events:none; opacity:.14; mix-blend-mode:multiply;
+      background-image:
+        radial-gradient(14px 10px at 20% 30%, #5a3e2d 0 40%, transparent 45%),
+        radial-gradient(12px 9px at 60% 10%, #81573f 0 40%, transparent 45%),
+        radial-gradient(16px 12px at 80% 70%, #694932 0 40%, transparent 45%),
+        radial-gradient(18px 12px at 30% 80%, #7a523a 0 40%, transparent 45%),
+        radial-gradient(12px 9px at 50% 60%, #6b4a32 0 40%, transparent 45%);
+      background-repeat: repeat;
+      background-size: 240px 240px;
+      filter: blur(0.2px);
+    }
+
+    .container{
+      max-width:1100px; margin:0 auto; padding:40px 24px 80px;
+    }
+
+    /* هدر شیشه‌ای */
+    .hero{
+      position:relative;
+      display:flex; gap:24px; align-items:center; justify-content:space-between;
+      padding:24px; border-radius: var(--radius-xxl);
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px) saturate(1.2);
+      -webkit-backdrop-filter: blur(12px) saturate(1.2);
+      border:1px solid var(--glass-stroke);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hero::after{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(500px 200px at -10% -20%, rgba(255,255,255,.6), transparent 60%),
+                  radial-gradient(400px 200px at 120% 120%, rgba(255,255,255,.35), transparent 60%);
+      pointer-events:none;
+    }
+    .brand{
+      display:flex; align-items:center; gap:14px;
+    }
+    .logo{
+      width:56px; height:56px; border-radius:50%;
+      background: conic-gradient(from 0deg, #6b4a32, #3b2a1f, #6b4a32);
+      position:relative; box-shadow: 0 8px 20px rgba(59,42,31,.3);
+    }
+    .logo::before{
+      content:"☕";
+      position:absolute; inset:0; display:grid; place-items:center;
+      font-size:28px; color:#fff; filter: drop-shadow(0 2px 2px rgba(0,0,0,.3));
+    }
+    .title{
+      display:flex; flex-direction:column;
+    }
+    .title h1{margin:0; font-size:22px;}
+    .title p{margin:4px 0 0; color:#5a473a; font-size:13px}
+
+    /* کنترل‌ها */
+    .controls{
+      display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+    }
+    .select-wrap{
+      display:flex; align-items:center; gap:10px;
+      padding:10px 14px; border-radius:14px; background: var(--glass-bg);
+      backdrop-filter: blur(8px);
+      border:1px solid var(--glass-stroke);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.25);
+    }
+    .select-wrap .icon{font-size:18px}
+    select{
+      appearance:none; border:none; outline:none; background:transparent;
+      font-size:14px; color:var(--coffee-900);
+      padding:6px 26px 6px 8px; border-radius:10px;
+      direction: rtl;
+    }
+    .select-wrap .chev{
+      width:16px; height:16px; opacity:.7;
+      background: conic-gradient(from 90deg at 50% 35%, #6b4a32, #3b2a1f);
+      -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox=\"0 0 24 24\" fill=\"%23000\"><path d=\"M7 10l5 5 5-5z\"/></svg>') center/contain no-repeat;
+              mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox=\"0 0 24 24\" fill=\"%23000\"><path d=\"M7 10l5 5 5-5z\"/></svg>') center/contain no-repeat;
+    }
+
+    /* کارت مواد */
+    .card{
+      margin-top:22px; padding:22px; border-radius:var(--radius-xxl);
+      background: var(--glass-bg);
+      border:1px solid var(--glass-stroke);
+      backdrop-filter: blur(10px) saturate(1.1);
+      -webkit-backdrop-filter: blur(10px) saturate(1.1);
+      box-shadow: var(--shadow);
+      position:relative; overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(600px 180px at 0% -10%, rgba(255,255,255,.45), transparent 60%);
+      pointer-events:none;
+    }
+    .card-header{
+      display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:10px;
+    }
+    .drink-meta{
+      display:flex; align-items:center; gap:12px;
+    }
+    .drink-icon{
+      width:56px; height:56px; border-radius:14px; flex:0 0 auto;
+      background: var(--grad-coffee); color:#fff; display:grid; place-items:center;
+      font-size:28px; position:relative; box-shadow: 0 8px 18px rgba(59,42,31,.35);
+    }
+    .drink-title{
+      display:flex; flex-direction:column;
+    }
+    .drink-title h3{margin:0; font-size:18px}
+    .drink-title span{color:#6d5a4b; font-size:12px}
+
+    /* گرید مواد */
+    .grid{
+      display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+      gap:14px; margin-top:12px;
+    }
+    .item{
+      background: rgba(255,255,255,.28);
+      border:1px solid rgba(255,255,255,.45);
+      border-radius: var(--radius-xl);
+      padding:12px 12px 14px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 8px 16px rgba(0,0,0,.08);
+      position:relative; overflow:hidden;
+      transition:.25s transform, .25s box-shadow;
+    }
+    .item:hover{ transform: translateY(-2px); box-shadow: 0 12px 24px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.5);}
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:13px; color:var(--coffee-900);
+    }
+    .chip .mini{
+      width:22px; height:22px; border-radius:8px; display:grid; place-items:center;
+      background: linear-gradient(135deg, rgba(138,90,58,.9), rgba(59,42,31,.9));
+      color:#fff; box-shadow: 0 2px 6px rgba(0,0,0,.25);
+      font-size:13px;
+    }
+    .qty{
+      font-size:12px; color:#634d3c; margin-inline-start:auto;
+      padding:2px 8px; border-radius:8px; background: rgba(255,255,255,.5); border:1px solid rgba(255,255,255,.7);
+    }
+    .bar{
+      margin-top:10px; position:relative; height:16px; border-radius:10px; overflow:hidden;
+      background: var(--bar-bg);
+      box-shadow: inset 0 2px 6px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.6);
+    }
+    .bar::after{
+      content:""; position:absolute; inset:0; background: var(--bar-gloss); pointer-events:none;
+    }
+    .fill{
+      position:absolute; inset:0 auto 0 0; width:0%;
+      background: var(--grad-bar);
+      box-shadow: inset 0 0 10px rgba(255,255,255,.15), 0 6px 12px rgba(59,42,31,.25);
+      transition: width .5s cubic-bezier(.25,.8,.25,1);
+    }
+    .tick{
+      position:absolute; inset:-2px 0 -2px auto; width:2px; background: rgba(59,42,31,.25);
+      box-shadow: 0 10px 20px rgba(0,0,0,.25);
+    }
+    .legend{
+      display:flex; justify-content:space-between; font-size:11px; color:#7a6453; margin-top:6px;
+    }
+
+    .meta{
+      margin-top:14px; font-size:12px; color:#5d4e43;
+      background: rgba(255,255,255,.35);
+      border:1px solid rgba(255,255,255,.55);
+      padding:10px 12px; border-radius:12px;
+    }
+
+    /* کارت نکات */
+    .tips{
+      margin-top:18px; display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:16px;
+    }
+    .tip{
+      background: rgba(255,255,255,.22);
+      border:1px solid rgba(255,255,255,.45);
+      border-radius:16px; padding:12px 14px; font-size:12px; color:#5a473a;
+      display:flex; gap:10px; align-items:flex-start;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 8px 16px rgba(0,0,0,.08);
+    }
+    .tip .ico{ width:26px; height:26px; border-radius:8px; display:grid; place-items:center; background: var(--grad-coffee); color:#fff; }
+
+    /* پایینی */
+    .footer{
+      margin-top:22px; font-size:11px; color:#6f5d4d; text-align:center;
+    }
+
+    /* ریسپانسیو */
+    @media (max-width:640px){
+      .hero{ flex-direction:column; align-items:stretch; }
+      .controls{ justify-content:space-between }
+    }
+  </style>
+</head>
+<body>
+  <div class="beans"></div>
+  <div class="container">
+    <section class="hero">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="title">
+          <h1>انتخاب نوشیدنی قهوه</h1>
+          <p>طراحی شیشه‌ای با تم قهوه‌ای، کرمی و سفید — با آیکون‌ها و نوارهای وضعیت زیبا</p>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="select-wrap">
+          <span class="icon" aria-hidden="true">🍹</span>
+          <select id="drink" aria-label="انتخاب نوشیدنی"></select>
+          <span class="chev" aria-hidden="true"></span>
+        </div>
+      </div>
+    </section>
+
+    <section id="ingredientsCard" class="card" style="display:none;">
+      <div class="card-header">
+        <div class="drink-meta">
+          <div class="drink-icon" id="drinkIcon" aria-hidden="true">☕</div>
+          <div class="drink-title">
+            <h3 id="drinkTitle"></h3>
+            <span id="drinkTagline"></span>
+          </div>
+        </div>
+      </div>
+
+      <div id="ingredients" class="grid"></div>
+
+      <div class="legend">
+        <span>کم</span>
+        <span>زیاد</span>
+      </div>
+
+      <div class="meta" id="notes"></div>
+
+      <div class="tips">
+        <div class="tip">
+          <div class="ico">🫘</div>
+          <div>برای طعم متعادل، از آسیاب تازه و نسبت عصاره‌گیری پایدار استفاده شود.</div>
+        </div>
+        <div class="tip">
+          <div class="ico">🥛</div>
+          <div>برای بافت مخملی، دمای شیر 55–60°C و میکروفوم یکدست را هدف بگیرید.</div>
+        </div>
+        <div class="tip">
+          <div class="ico">🎨</div>
+          <div>نسبت‌ها را با سلیقه تنظیم کنید؛ نوارها به‌صورت بصری کمک می‌کنند.</div>
+        </div>
+      </div>
+
+      <div class="footer">نسبت‌ها قابل تنظیم‌اند و ممکن است بر اساس کافه تغییر کنند.</div>
+    </section>
+  </div>
+
+<script>
+  const SHOT_ML = 30;
+
+  // آیکون و تگ‌لاین برای هر نوشیدنی (تنظیم دلخواه)
+  const ICONS = {
+    "لاته":"🥛", "کاپوچینو":"🎩", "ماکیاتو":"🫧", "لاته ماکیاتو":"🫖",
+    "موکا":"🍫","آمریکانو":"💧","فلت‌وایت":"🧴","کورتادو":"⚖️","ریسترتو":"🎯","دوپیو":"2️⃣",
+    "لونگو":"📏","کافه او لِه":"🥛","آفوگاتو":"🍨","آیس لاته/کافه کن هیلو":"🧊",
+    "پیکولو لاته":"🧁","بریوه":"🥛","Con Panna":"🍦","وینِیز":"🍰","کافه رومانو":"🍋",
+    "اسپرسو تونیک":"🍸","موکا نعناع":"🌿","کارامل ماکیاتو":"🍯","لاته وانیلی":"🌼",
+    "موکا سفید":"🤍","کاپوچینوی خشک":"🌫️","کاپوچینوی تر":"💧","فلت‌وایت گیاهی":"🌱",
+    "اسپرسو کُن هیلو":"🧊","کافه بومبون":"🍮","آیریش کافی (قهوه‌ای)":"🍀","رد‌آی/بلک‌آی":"⚡"
+  };
+  const TAGS = {
+    "لاته":"متعادل و شیری",
+    "کاپوچینو":"فوم ابری با رایحه قهوه",
+    "ماکیاتو":"اسپرسوی لکه‌دار",
+    "لاته ماکیاتو":"شیر غالب با لایه‌بندی شیک",
+    "موکا":"شکلاتی و کرمی",
+    "آمریکانو":"روشن و رقیق‌شده",
+    "فلت‌وایت":"مخملی و نرم",
+    "کورتادو":"1:1 مینیمال",
+    "ریسترتو":"کوتاه و پرقدرت",
+    "دوپیو":"دوبرابر انرژی",
+    "لونگو":"بلند و کشیده",
+    "کافه او لِه":"نیم‌ونیمِ آرام",
+    "آفوگاتو":"دسرِ قهوه‌ای",
+    "آیس لاته/کافه کن هیلو":"یخی و خنک",
+    "پیکولو لاته":"کوچک و ظریف",
+    "بریوه":"غنی با نیم‌ونیم",
+    "Con Panna":"با خامه رویی",
+    "وینِیز":"به سبک وین",
+    "کافه رومانو":"با تُرشی لیمو",
+    "اسپرسو تونیک":"حباب‌دار و تلخ-شیرین",
+    "موکا نعناع":"شکلات-نعنا",
+    "کارامل ماکیاتو":"وانیلی با کارامل",
+    "لاته وانیلی":"عطری و نرم",
+    "موکا سفید":"کرم و شیرین",
+    "کاپوچینوی خشک":"فوم بیشتر",
+    "کاپوچینوی تر":"شیر بیشتر",
+    "فلت‌وایت گیاهی":"گیاهی و سبک",
+    "اسپرسو کُن هیلو":"اسپرسوی یخی",
+    "کافه بومبون":"شیر عسلی اسپانیایی",
+    "آیریش کافی (قهوه‌ای)":"نسخه غیرالکلی",
+    "رد‌آی/بلک‌آی":"کافئین افزوده"
+  };
+
+  const DRINKS = {
+    "لاته":{notes:"اسپرسو با شیر بخارخورده و لایه نازک فوم.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"شیر بخارخورده (ml)":160,"فوم شیر (ml)":20}},
+    "کاپوچینو":{notes:"سهم‌های نزدیکِ اسپرسو، شیر و فوم.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"شیر بخارخورده (ml)":60,"فوم شیر (ml)":60}},
+    "ماکیاتو":{notes:"اسپرسو لکه‌دار با کمی فوم.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"فوم شیر (ml)":10}},
+    "لاته ماکیاتو":{notes:"شیر غالب با شات رویی.",ingredients:{"شیر بخارخورده (ml)":180,"اسپرسو (شات)":1*SHOT_ML,"فوم شیر (ml)":10}},
+    "موکا":{notes:"لاته + شکلات؛ گاهی خامه.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"سس/پودر شکلات (ml)":20,"شیر بخارخورده (ml)":150,"خامه (اختیاری ml)":20}},
+    "آمریکانو":{notes:"اسپرسو رقیق‌شده با آب.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"آب داغ (ml)":120}},
+    "فلت‌وایت":{notes:"شیر مخملی با میکروفوم نازک.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"شیر بخارخورده (ml)":140}},
+    "کورتادو":{notes:"نسبت 1:1 اسپرسو-شیر.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"شیر بخارخورده (ml)":40}},
+    "ریسترتو":{notes:"شات کوتاه و غلیظ.",ingredients:{"اسپرسو (ml)":20}},
+    "دوپیو":{notes:"دابل شات اسپرسو.",ingredients:{"اسپرسو (شات)":2*SHOT_ML}},
+    "لونگو":{notes:"شات بلندتر.",ingredients:{"اسپرسو (ml)":50}},
+    "کافه او لِه":{notes:"قهوه فیلتری + شیر (نیم‌به‌نیم).",ingredients:{"قهوه دم‌آوری (ml)":120,"شیر داغ (ml)":120}},
+    "آفوگاتو":{notes:"اسپرسو روی بستنی.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"بستنی (گرم)":60}},
+    "آیس لاته/کافه کن هیلو":{notes:"اسپرسو روی یخ، گاهی با شیر.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"یخ (تکه)":6,"آب/شیر (ml)":120}},
+    "پیکولو لاته":{notes:"لاته کوچک.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"شیر بخارخورده (ml)":70}},
+    "بریوه":{notes:"نیم‌ونیم به‌جای شیر.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"نیم‌ونیم (ml)":120}},
+    "Con Panna":{notes:"اسپرسو با خامه.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"خامه (ml)":20}},
+    "وینِیز":{notes:"به سبک وین با خامه.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"خامه (ml)":40}},
+    "کافه رومانو":{notes:"اسپرسو + لیمو.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"لیموی تازه (برش)":1}},
+    "اسپرسو تونیک":{notes:"اسپرسو + تونیک روی یخ.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"آب تونیک (ml)":120,"یخ (تکه)":6}},
+    "موکا نعناع":{notes:"موکا با شربت نعناع.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"سس/پودر شکلات (ml)":20,"شربت نعناع (ml)":15,"شیر بخارخورده (ml)":150}},
+    "کارامل ماکیاتو":{notes:"وانیلی + کارامل رویی.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"شیر بخارخورده (ml)":160,"شربت وانیل (ml)":10,"سس کارامل (ml)":10}},
+    "لاته وانیلی":{notes:"لاته عطری.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"شیر بخارخورده (ml)":160,"شربت وانیل (ml)":10}},
+    "موکا سفید":{notes:"لاته با شکلات سفید.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"سس شکلات سفید (ml)":20,"شیر بخارخورده (ml)":150}},
+    "کاپوچینوی خشک":{notes:"فوم بیشتر، شیر کمتر.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"شیر بخارخورده (ml)":30,"فوم شیر (ml)":90}},
+    "کاپوچینوی تر":{notes:"شیر بیشتر، فوم کمتر.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"شیر بخارخورده (ml)":90,"فوم شیر (ml)":30}},
+    "فلت‌وایت گیاهی":{notes:"با شیر گیاهی.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"شیر گیاهی (ml)":140}},
+    "اسپرسو کُن هیلو":{notes:"اسپرسوی یخی.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"یخ (تکه)":6}},
+    "کافه بومبون":{notes:"اسپرسو + شیر عسلی 1:1.",ingredients:{"اسپرسو (شات)":1*SHOT_ML,"شیر عسلی (ml)":30}},
+    "آیریش کافی (قهوه‌ای)":{notes:"بدون الکل (خانگی).",ingredients:{"قهوه دم‌آوری (ml)":150,"خامه (ml)":30}},
+    "رد‌آی/بلک‌آی":{notes:"قهوه دم‌آوری + شات.",ingredients:{"قهوه دم‌آوری (ml)":180,"اسپرسو (شات)":1*SHOT_ML}}
+  };
+
+  const select = document.getElementById('drink');
+  const drinkNames = Object.keys(DRINKS);
+  drinkNames.forEach(name=>{
+    const opt=document.createElement('option');
+    opt.value=name; opt.textContent=name; select.appendChild(opt);
+  });
+
+  function iconFor(name){ return ICONS[name] || "☕"; }
+  function tagFor(name){ return TAGS[name] || "نوشیدنی اسپرسویی"; }
+
+  function renderDrink(name){
+    const data=DRINKS[name]; if(!data) return;
+    document.getElementById('ingredientsCard').style.display='block';
+    document.getElementById('drinkTitle').textContent=name;
+    document.getElementById('drinkIcon').textContent=iconFor(name);
+    document.getElementById('drinkTagline').textContent=tagFor(name);
+    document.getElementById('notes').textContent=data.notes||'';
+
+    const container=document.getElementById('ingredients');
+    container.innerHTML='';
+
+    const values=Object.values(data.ingredients).map(v=> typeof v==='number'? v: 0);
+    const maxVal=Math.max(...values, 1);
+
+    Object.entries(data.ingredients).forEach(([label, value])=>{
+      const item=document.createElement('div');
+      item.className='item';
+
+      const row=document.createElement('div');
+      row.className='chip';
+
+      const emoji = pickIngredientEmoji(label);
+      const mini=document.createElement('div');
+      mini.className='mini';
+      mini.textContent=emoji;
+
+      const nameEl=document.createElement('div');
+      nameEl.textContent=label;
+
+      const qty=document.createElement('div');
+      qty.className='qty';
+      qty.textContent=value;
+
+      row.appendChild(mini);
+      row.appendChild(nameEl);
+      row.appendChild(qty);
+
+      const bar=document.createElement('div');
+      bar.className='bar';
+      const fill=document.createElement('div');
+      fill.className='fill';
+      const tick=document.createElement('div');
+      tick.className='tick';
+
+      const width=Math.min(100, (value/maxVal)*100);
+      fill.style.width=width+'%';
+      tick.style.right= (100-width)+'%';
+
+      bar.appendChild(fill);
+      bar.appendChild(tick);
+
+      item.appendChild(row);
+      item.appendChild(bar);
+      container.appendChild(item);
+    });
+  }
+
+  function pickIngredientEmoji(label){
+    label=label.toLowerCase();
+    if(label.includes('اسپرسو')) return '☕';
+    if(label.includes('شیر') && label.includes('گیاهی')) return '🌱';
+    if(label.includes('شیر')) return '🥛';
+    if(label.includes('فوم')) return '🫧';
+    if(label.includes('شکلات')) return '🍫';
+    if(label.includes('کارامل')) return '🍯';
+    if(label.includes('وانیل')) return '🌼';
+    if(label.includes('تونیک')) return '🥂';
+    if(label.includes('یخ')) return '🧊';
+    if(label.includes('بستنی')) return '🍨';
+    if(label.includes('لیم')) return '🍋';
+    if(label.includes('قهوه')) return '🫘';
+    return '🧪';
+  }
+
+  select.addEventListener('change', e=> renderDrink(e.target.value));
+  renderDrink(drinkNames[0]);
+</script>
+</body>
+</html>
